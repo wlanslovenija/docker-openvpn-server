@@ -5,5 +5,17 @@ if [ ! -c /dev/net/tun ]; then
   mknod /dev/net/tun c 10 200
 fi
 
+# Setup firewall policy.
+iptables -N AUTHORIZED_CLIENTS
+iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+iptables -A FORWARD -j AUTHORIZED_CLIENTS
+iptables -A FORWARD -j DROP
+
+# Load authorized common names.
+rm -f /etc/openvpn/authorized_cn
+for authorized_cn in ${AUTHORIZED_CNS}; do
+  echo ${authorized_cn} >> /etc/openvpn/authorized_cn
+done
+
 exec /usr/sbin/openvpn --config /etc/openvpn/server.conf 2>&1
 

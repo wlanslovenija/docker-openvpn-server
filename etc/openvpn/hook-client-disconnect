@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+AUTHORIZED_CN_FILE=/etc/openvpn/authorized_cn
+
+if [ -n "$(grep -x "${common_name}" ${AUTHORIZED_CN_FILE})" ]; then
+  iptables -D AUTHORIZED_CLIENTS -s ${ifconfig_pool_remote_ip} -j ACCEPT
+fi
+
