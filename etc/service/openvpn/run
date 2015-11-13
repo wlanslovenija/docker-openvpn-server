@@ -1,0 +1,4 @@
+#!/bin/bash -e
+
+exec /usr/sbin/openvpn --config /etc/openvpn/server.conf 2>&1
+
