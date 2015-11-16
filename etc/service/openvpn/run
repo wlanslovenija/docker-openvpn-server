@@ -8,7 +8,7 @@ fi
 # Setup firewall policy.
 iptables -N AUTHORIZED_CLIENTS
 iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-iptables -A FORWARD -j AUTHORIZED_CLIENTS
+iptables -A FORWARD -s 172.30.0.0/16 -d 172.30.0.0/16 -j AUTHORIZED_CLIENTS
 iptables -A FORWARD -j DROP
 
 # Load authorized common names.
